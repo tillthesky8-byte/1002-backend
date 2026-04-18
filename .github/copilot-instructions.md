@@ -86,7 +86,7 @@ app.db:
             - Id (INTEGER, PK)
             - Title (TEXT)
             - Description (TEXT)
-            - Date (INTEGER)
+            - Date (TEXT)
     - `Questions`/
         - columns/
             - Id (INTEGER, PK)
