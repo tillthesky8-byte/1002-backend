@@ -68,3 +68,60 @@ Models/
 1. .docs/plan.md: This file contains the project implementation plan and commit messages. Which must be followed when implementing the project. The commit messages must be clear and concise, and must follow the format specified in the file. 
 
 2. .docs/notes.md: This file contains notes and thoughts about the project implementation. Can be ignored by the agent, but can be used as a reference for the implementation.
+
+# Database Schema
+app.db:
+`tables`/
+    - `Answers`/
+        - columns/
+            - Id (INTEGER, PK)
+            - QuestionId (INTEGER, FK to Questions)
+            - SurveySessionId (INTEGER, FK to SurveySessions)
+            - Response (TEXT)
+            - Remark (TEXT)
+        - indexes/
+            - idx_answers_surveysessionid_questionid (SurveySessionId, QuestionId)
+    - `DreamEntries`/
+        - columns/
+            - Id (INTEGER, PK)
+            - Title (TEXT)
+            - Description (TEXT)
+            - Date (INTEGER)
+    - `Questions`/
+        - columns/
+            - Id (INTEGER, PK)
+            - Code (TEXT UNIQUE NOT NULL)
+            - Text (TEXT)
+            - SectionId (INTEGER, FK to Sections)
+            - QuestionTypeId (INTEGER, FK to QuestionTypes)
+        - indexes/
+            - idx_questions_sectionid_questiontypeid (SectionId, QuestionTypeId)
+    - `QuestionTypes`/
+        - columns/
+            - Id (INTEGER, PK)
+            - Name (TEXT UNIQUE NOT NULL)
+    - `Sections`/
+        - columns/
+            - Id (INTEGER, PK)
+            - Name (TEXT)
+    - `SurveySessions`/
+        - columns/
+            - Id (INTEGER, PK)
+            - Date (TEXT UNIQUE NOT NULL)
+    - `TodoStatuses`/
+        - columns/
+            - Id (INTEGER, PK)
+            - Name (TEXT NOT NULL UNIQUE)
+    - `TodoTimeFrames`/
+        - columns/
+            - Id (INTEGER, PK)
+            - Name (TEXT NOT NULL UNIQUE)
+    - `Todos`/
+        - columns/
+            - Id (INTEGER, PK)
+            - Text (TEXT)
+            - CreatedAt (INTEGER)
+            - DueAt (INTEGER)
+            - FinishedAt (INTEGER)
+            - StatusId (INTEGER, FK to TodoStatuses)
+            - TimeFrameId (INTEGER, FK to TodoTimeFrames)
