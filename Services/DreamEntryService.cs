@@ -1,7 +1,7 @@
 using _1002_backend.Models;
 using _1002_backend.Repositories.Interfaces;
 using _1002_backend.Services.Interfaces;
-using _1002_backend.Dtos.DreamEntries;
+
 
 namespace _1002_backend.Services;
 public class DreamEntryService : IDreamEntryService
