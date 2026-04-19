@@ -21,7 +21,7 @@ public interface ITodoService
 {
     Task<IEnumerable<Todo>> GetAllTodos(int pageNumber, int pageSize);
     Task<Todo?> GetTodoById(int id);
-    Task<bool> CreateTodo(string text, int? dueAt, int statusId, int timeFrameId);
+    Task<bool> CreateTodo(string text, int? dueAt, int timeFrameId);
     Task<bool> UpdateTodo(string text, int? dueAt, int? finishedAt, int statusId, int timeFrameId, int id);
     Task<bool> DeleteTodo(int id);
 

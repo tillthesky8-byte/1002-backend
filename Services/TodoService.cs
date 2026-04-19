@@ -46,25 +46,25 @@ public class TodoService : ITodoService
         }
     }
 
-    public async Task<bool> CreateTodo(string text, int? dueAt, int statusId, int timeFrameId)
+    public async Task<bool> CreateTodo(string text, int? dueAt, int timeFrameId)
     {
         try
         {
-            _logger.LogInformation("Creating Todo entity with text: \n {Text}, \n dueAt: {DueAt}, \n statusId: {StatusId}, \n timeFrameId: {TimeFrameId}", text, dueAt, statusId, timeFrameId);
+            _logger.LogInformation("Creating Todo entity with text: \n {Text}, \n dueAt: {DueAt}, \n statusId: {StatusId}, \n timeFrameId: {TimeFrameId}", text, dueAt, 1, timeFrameId);
             var todo = new Todo
             {
                 Title = text,
                 DueAt = dueAt,
-                StatusId = statusId,
+                StatusId = 1,
                 TimeFrameId = timeFrameId
             };
 
-            _logger.LogInformation("Entity is created -> Delegating CreateTodo to repository with text: \n {Text}, \n dueAt: {DueAt}, \n statusId: {StatusId}, \n timeFrameId: {TimeFrameId}", text, dueAt, statusId, timeFrameId);
+            _logger.LogInformation("Entity is created -> Delegating CreateTodo to repository with text: \n {Text}, \n dueAt: {DueAt}, \n statusId: {StatusId}, \n timeFrameId: {TimeFrameId}", text, dueAt, 1, timeFrameId);
             return await _todoRepository.CreateTodo(todo);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error in CreateTodo with text: \n {Text}, \n dueAt: {DueAt}, \n statusId: {StatusId}, \n timeFrameId: {TimeFrameId}", text, dueAt, statusId, timeFrameId);
+            _logger.LogError(ex, "Error in CreateTodo with text: \n {Text}, \n dueAt: {DueAt}, \n statusId: {StatusId}, \n timeFrameId: {TimeFrameId}", text, dueAt, 1, timeFrameId);
             throw;
         }
     }

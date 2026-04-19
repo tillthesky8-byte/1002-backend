@@ -9,11 +9,11 @@ public class CreateTodoRequest
 
 public class UpdateTodoRequest
 {
-    public string? Text { get; set; } = null;
-    public int? DueAt { get; set; } = null;
+    public string Text { get; set; } = string.Empty;
+    public int? DueAt { get; set; }
     public int? FinishedAt { get; set; } = null;
-    public int? StatusId { get; set; } = null;
-    public int? TimeFrameId { get; set; } = null;
+    public int StatusId { get; set; }
+    public int TimeFrameId { get; set; }
 }
 
 public class TodoResponse
