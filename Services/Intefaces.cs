@@ -13,7 +13,7 @@ public interface IDreamEntryService
 
 public interface ISurveyService
 {
-    Task<bool> SurveyExistsToday();
+    Task<bool> ExistsSurvey();
     Task<bool> SubmitSurvey(DateOnly date, List<Answer> answers);
 }
 
