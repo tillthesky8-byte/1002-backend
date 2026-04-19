@@ -150,6 +150,7 @@ public class {repositoryClassName} : I{repositoryClassName}
 1. Method signature should be `Task<int> Create[EntityName]([EntityName] [entityName])`.
 2. SQL query should be an INSERT statement with parameters for each property of the entity, and should return the newly created record's ID.
 
+
 ### Specialized general protocol extension for Read Operations:
 1. Method signature for getting all records should be `Task<IEnumerable<[EntityName]>> GetAll[EntityName]s(int pageNumber, int pageSize)`.\
 2. Basic input validation should be performed to ensure pageNumber and pageSize are greater than 0.
