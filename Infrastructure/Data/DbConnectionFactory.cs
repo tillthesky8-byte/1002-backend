@@ -12,7 +12,8 @@ public sealed class DbConnectionFactory : IDbConnectionFactory
         _connectionString = configuration.GetConnectionString("DefaultConnection")
             ?? throw new InvalidOperationException("Connection string 'DefaultConnection' was not found.");
     }
-
+    
+    // Note for the future: Switch IDbConnection to DbConnection for async support.
     public IDbConnection CreateConnection()
     {
         return new SqliteConnection(_connectionString);
