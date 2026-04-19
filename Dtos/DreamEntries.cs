@@ -4,7 +4,7 @@ public class CreateDreamEntryRequest
 {
     public string Title { get; set; } = string.Empty;
     public string Content { get; set; } = string.Empty;
-    public DateOnly Date { get; set; }
+    public DateOnly? Date { get; set; } = null;
 }
 
 public class UpdateDreamEntryRequest
@@ -19,5 +19,5 @@ public class DreamEntryResponse
     public int Id { get; set; }
     public string Title { get; set; } = string.Empty;
     public string Content { get; set; } = string.Empty;
-    public DateOnly Date { get; set; }
+    public DateOnly? Date { get; set; }
 }

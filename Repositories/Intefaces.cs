@@ -9,6 +9,8 @@ public interface IDreamEntryRepository
     Task<bool> CreateDreamEntry(DreamEntry entry);
     Task<bool> UpdateDreamEntry(DreamEntry entry);
     Task<bool> DeleteDreamEntry(int id);
+
+    Task<IEnumerable<DreamEntry>> GetDreamEntriesByDate(DateOnly date);
 }
 
 public interface ISurveyRepository
