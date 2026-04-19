@@ -15,7 +15,28 @@ public class DreamEntryRepository : IDreamEntryRepository
         _dbConnectionFactory = dbConnectionFactory;
         _logger = logger;
     }
+    // Custom operations for DreamEntry 
+    public async Task<IEnumerable<DreamEntry>> GetDreamEntriesByDate(DateOnly date)
+    {
+        try
+        {
+            using var connection = _dbConnectionFactory.CreateConnection();
+            const string query = @"SELECT Id, Title, Description, Date
+                                   FROM DreamEntries
+                                   WHERE Date = @Date
+                                   ORDER BY Date DESC";
+            var result = (await connection.QueryAsync<DreamEntry>(query, new { Date = date })).AsList();
+            _logger.LogInformation("Fetched {Count} dream entries for date {Date}", result.Count, date);
+            return result;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error fetching dream entries for date {Date}", date);
+            throw; // Rethrow the exception to be handled by middleware
+        }
+    }
 
+    // CRUD operations for DreamEntry
     public async Task<IEnumerable<DreamEntry>> GetAllDreamEntries(int pageNumber, int pageSize)
     {
         // basic input validation
