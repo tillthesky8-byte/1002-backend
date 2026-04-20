@@ -23,12 +23,12 @@ public class SurveyRepository : ISurveyRepository
             using var connection = _dbConnectionFactory.CreateConnection();
             const string query = @"SELECT COUNT(1) FROM SurveySessions WHERE Date = @Today";
             var count = await connection.ExecuteScalarAsync<int>(query, new { Today = DateOnly.FromDateTime(DateTime.UtcNow) });
-            _logger.LogInformation("Checked for existing survey session today: {Exists}", count > 0);
+            _logger.LogInformation("\n ---START--- \n \n Checked for existing survey session today: {Exists} \n \n ---END--- \n", count > 0);
             return count > 0;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error checking for existing survey session today");
+            _logger.LogError(ex, "\n ---START--- \n \n Error checking for existing survey session today \n \n ---END--- \n");
             throw;
         }
     }
@@ -53,12 +53,12 @@ public class SurveyRepository : ISurveyRepository
             }
 
             transaction.Commit();
-            _logger.LogInformation("Submitted survey session with ID {SessionId} and {AnswerCount} answers", sessionId, answers.Count);
+            _logger.LogInformation("\n ---START--- \n \n Submitted survey session with ID {SessionId} and {AnswerCount} answers \n \n ---END--- \n", sessionId, answers.Count);
             return true;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error submitting survey session");
+            _logger.LogError(ex, "\n ---START--- \n \n Error submitting survey session \n \n ---END--- \n");
             throw;
         }
     }

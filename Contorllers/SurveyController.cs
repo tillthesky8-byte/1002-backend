@@ -21,8 +21,8 @@ public class SurveyController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> SubmitSurvey([FromBody] SubmitSurveyRequest request)
     {
-        _logger.LogInformation("Received request to submit survey with date: {Date} and answers: {Answers}", request.Date, request.Answers);
-        _logger.LogInformation("Delegating SubmitSurvey to service with date: {Date} and answers: {Answers}", request.Date, request.Answers);
+        _logger.LogInformation("\n ---START--- \n \n Received request to submit survey with date: {Date} and answers: {Answers} \n \n ---END--- \n", request.Date, request.Answers);
+        _logger.LogInformation("\n ---START--- \n \n Delegating {SubmitSurvey} to service ...  \n \n ---END--- \n", nameof(_surveyService.SubmitSurvey));
         var success = await _surveyService.SubmitSurvey(request.Date, request.Answers);
         if (!success) return BadRequest();
         return Ok();
@@ -32,8 +32,8 @@ public class SurveyController : ControllerBase
     [HttpGet("existence")]
     public async Task<IActionResult> CheckSurveyExistence() 
     {
-        _logger.LogInformation("Received request to check survey existence for today");
-        _logger.LogInformation("Delegating ExistsSurvey to service");
+        _logger.LogInformation("\n ---START--- \n \n Received request to check survey existence for today \n \n ---END--- \n");
+        _logger.LogInformation("\n ---START--- \n \n Delegating {ExistsSurvey} to service ... \n \n ---END--- \n", nameof(_surveyService.ExistsSurvey));
         var exists = await _surveyService.ExistsSurvey();
         return Ok(new SurveyExistenceResponse { Exists = exists });
     }

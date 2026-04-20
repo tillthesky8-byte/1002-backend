@@ -26,12 +26,12 @@ public class DreamEntryRepository : IDreamEntryRepository
                                    WHERE Date = @Date
                                    ORDER BY Date DESC";
             var result = (await connection.QueryAsync<DreamEntry>(query, new { Date = date })).AsList();
-            _logger.LogInformation("Fetched {Count} dream entries for date {Date}", result.Count, date);
+            _logger.LogInformation("\n ---START--- \n \n Fetched {Count} dream entries for date {Date} \n \n ---END--- \n", result.Count, date);
             return result;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error fetching dream entries for date {Date}", date);
+            _logger.LogError(ex, "\n ---START--- \n \n Error fetching dream entries for date {Date} \n \n ---END--- \n", date);
             throw; // Rethrow the exception to be handled by middleware
         }
     }
@@ -52,12 +52,12 @@ public class DreamEntryRepository : IDreamEntryRepository
                                    ORDER BY Date DESC
                                    LIMIT @PageSize OFFSET @Offset";
             var result = (await connection.QueryAsync<DreamEntry>(query, new { PageSize = pageSize, Offset = offset })).AsList();
-            _logger.LogInformation("Fetched {Count} dream entries for page {PageNumber} with page size {PageSize}", result.Count, pageNumber, pageSize);
+            _logger.LogInformation("\n ---START--- \n \n Fetched {Count} dream entries for page {PageNumber} with page size {PageSize} \n \n ---END--- \n", result.Count, pageNumber, pageSize);
             return result;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error fetching dream entries");
+            _logger.LogError(ex, "\n ---START--- \n \n Error fetching dream entries \n \n ---END--- \n");
             throw; // Rethrow the exception to be handled by middleware
         }
 
@@ -73,14 +73,14 @@ public class DreamEntryRepository : IDreamEntryRepository
                                    WHERE Id = @Id";
             var result = await connection.QuerySingleOrDefaultAsync<DreamEntry>(query, new { Id = id });
             
-            if (result != null) _logger.LogInformation("Fetched dream entry with ID {Id}", id);
-            else _logger.LogWarning("No dream entry found with ID {Id}", id);
+            if (result != null) _logger.LogInformation("\n ---START--- \n \n Fetched dream entry with ID {Id} \n \n ---END--- \n", id);
+            else _logger.LogWarning("\n ---START--- \n \n No dream entry found with ID {Id} \n \n ---END--- \n", id);
 
             return result;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error fetching dream entry with ID {Id}", id);
+            _logger.LogError(ex, "\n ---START--- \n \n Error fetching dream entry with ID {Id} \n \n ---END--- \n", id);
             throw; // Rethrow the exception to be handled by middleware
         }
     }
@@ -94,12 +94,12 @@ public class DreamEntryRepository : IDreamEntryRepository
                                    VALUES (@Title, @Description, @Date);
                                    SELECT last_insert_rowid();";
             var newId = await connection.ExecuteScalarAsync<int>(query, entry);
-            _logger.LogInformation("Created new dream entry with ID {Id}", newId);
+            _logger.LogInformation("\n ---START--- \n \n Created new dream entry with ID {Id} \n \n ---END--- \n", newId);
             return true;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error creating new dream entry");
+            _logger.LogError(ex, "\n ---START--- \n \n Error creating new dream entry \n \n ---END--- \n");
             throw; // Rethrow the exception to be handled by middleware
         }
     }
@@ -113,13 +113,13 @@ public class DreamEntryRepository : IDreamEntryRepository
                                    SET Title = @Title, Description = @Description, Date = @Date
                                    WHERE Id = @Id";
             var rowsAffected = await connection.ExecuteAsync(query, entry);
-            if (rowsAffected > 0) _logger.LogInformation("Updated dream entry with ID {Id}", entry.Id);
-            else _logger.LogWarning("No dream entry found to update with ID {Id}", entry.Id);
+            if (rowsAffected > 0) _logger.LogInformation("\n ---START--- \n \n Updated dream entry with ID {Id} \n \n ---END--- \n", entry.Id);
+            else _logger.LogWarning("\n ---START--- \n \n No dream entry found to update with ID {Id} \n \n ---END--- \n", entry.Id);
             return rowsAffected > 0;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error updating dream entry with ID {Id}", entry.Id);
+            _logger.LogError(ex, "\n ---START--- \n \n Error updating dream entry with ID {Id} \n \n ---END--- \n", entry.Id);
             throw; // Rethrow the exception to be handled by middleware
         }
     }
@@ -131,13 +131,13 @@ public class DreamEntryRepository : IDreamEntryRepository
             using var connection = _dbConnectionFactory.CreateConnection();
             const string query = @"DELETE FROM DreamEntries WHERE Id = @Id";
             var rowsAffected = await connection.ExecuteAsync(query, new { Id = id });
-            if (rowsAffected > 0) _logger.LogInformation("Deleted dream entry with ID {Id}", id);
-            else _logger.LogWarning("No dream entry found to delete with ID {Id}", id);
+            if (rowsAffected > 0) _logger.LogInformation("\n ---START--- \n \n Deleted dream entry with ID {Id} \n \n ---END--- \n", id);
+            else _logger.LogWarning("\n ---START--- \n \n No dream entry found to delete with ID {Id} \n \n ---END--- \n", id);
             return rowsAffected > 0;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error deleting dream entry with ID {Id}", id);
+            _logger.LogError(ex, "\n ---START--- \n \n Error deleting dream entry with ID {Id} \n \n ---END--- \n", id);
             throw; // Rethrow the exception to be handled by middleware
         }
     }

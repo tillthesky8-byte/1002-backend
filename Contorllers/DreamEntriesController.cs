@@ -21,9 +21,9 @@ public class DreamEntriesController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAllDreamEntries([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
     {
-        _logger.LogInformation("Received request to get all dream entries \n pageNumber: {PageNumber}, pageSize: {PageSize}", pageNumber, pageSize);
+        _logger.LogInformation("\n ---START--- \n \n Received request to get all dream entries \n pageNumber: {PageNumber}, pageSize: {PageSize} \n \n ---END--- \n", pageNumber, pageSize);
         // with middleware handling exceptions, we can just let the exception throw and be handled by middleware.
-        _logger.LogInformation("Delegating GetAllDreamEntries to service with \n pageNumber: {PageNumber}, pageSize: {PageSize}", pageNumber, pageSize);
+        _logger.LogInformation("\n ---START--- \n \n Delegating {GetAllDreamEntries} to service ... \n \n ---END--- \n", nameof(_dreamEntryService.GetAllDreamEntries));
         var entries = await _dreamEntryService.GetAllDreamEntries(pageNumber, pageSize);
         return Ok(entries);
     }
@@ -32,8 +32,8 @@ public class DreamEntriesController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetDreamEntryById(int id)
     {
-        _logger.LogInformation("Received request to get dream entry by id: {Id}", id);
-        _logger.LogInformation("Delegating GetDreamEntryById to service with id: {Id}", id);
+        _logger.LogInformation("\n ---START--- \n \n Received request to get dream entry by id: {Id} \n \n ---END--- \n", id);
+        _logger.LogInformation("\n ---START--- \n \n Delegating {GetDreamEntryById} to service ... \n \n ---END--- \n", nameof(_dreamEntryService.GetDreamEntryById));
         var entry = await _dreamEntryService.GetDreamEntryById(id);
         if (entry == null) return NotFound();
         return Ok(entry);
@@ -43,8 +43,8 @@ public class DreamEntriesController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateDreamEntry([FromBody] CreateDreamEntryRequest request)
     {
-        _logger.LogInformation("Received request to create dream entry with title: \n {Title}, \n content: {Content}, \n date: {Date}", request.Title, request.Content, request.Date);
-        _logger.LogInformation("Delegating CreateDreamEntry to service with title: \n {Title}, \n content: {Content}, \n date: {Date}", request.Title, request.Content, request.Date);
+        _logger.LogInformation("\n ---START--- \n \n Received request to create dream entry with title: \n {Title}, \n content: {Content}, \n date: {Date} \n \n ---END--- \n", request.Title, request.Content, request.Date);
+        _logger.LogInformation("\n ---START--- \n \n Delegating {CreateDreamEntry} to service ... \n \n ---END--- \n", nameof(_dreamEntryService.CreateDreamEntry));
         var success = await _dreamEntryService.CreateDreamEntry(request.Title, request.Content, request.Date);
         if (!success) return BadRequest();
         return Ok();
@@ -54,8 +54,8 @@ public class DreamEntriesController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateDreamEntry(int id, [FromBody] UpdateDreamEntryRequest request)
     {
-        _logger.LogInformation("Received request to update dream entry with id: {Id}, title: {Title}, content: {Content}, date: {Date}", id, request.Title, request.Content, request.Date);
-        _logger.LogInformation("Delegating UpdateDreamEntry to service with id: {Id}, title: {Title}, content: {Content}, date: {Date}", id, request.Title, request.Content, request.Date);
+        _logger.LogInformation("\n ---START--- \n \n Received request to update dream entry with id: {Id}, title: {Title}, content: {Content}, date: {Date} \n \n ---END--- \n", id, request.Title, request.Content, request.Date);
+        _logger.LogInformation("\n ---START--- \n \n Delegating {UpdateDreamEntry} to service ... \n \n ---END--- \n", nameof(_dreamEntryService.UpdateDreamEntry));
         var success = await _dreamEntryService.UpdateDreamEntry(request.Title, request.Content, request.Date, id);
         if (!success) return BadRequest();
         return Ok();
@@ -65,8 +65,8 @@ public class DreamEntriesController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteDreamEntry(int id)
     {
-        _logger.LogInformation("Received request to delete dream entry with id: {Id}", id);
-        _logger.LogInformation("Delegating DeleteDreamEntry to service with id: {Id}", id);
+        _logger.LogInformation("\n ---START--- \n \n Received request to delete dream entry with id: {Id} \n \n ---END--- \n", id);
+        _logger.LogInformation("\n ---START--- \n \n Delegating {DeleteDreamEntry} to service ... \n \n ---END--- \n", nameof(_dreamEntryService.DeleteDreamEntry));
         var success = await _dreamEntryService.DeleteDreamEntry(id);
         if (!success) return BadRequest();
         return Ok();

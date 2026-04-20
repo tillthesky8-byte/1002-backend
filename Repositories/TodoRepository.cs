@@ -32,12 +32,12 @@ public class TodoRepository : ITodoRepository
                                    ORDER BY CreatedAt DESC
                                    LIMIT @PageSize OFFSET @Offset";
             var result = (await connection.QueryAsync<Todo>(query, new { PageSize = pageSize, Offset = offset })).AsList();
-            _logger.LogInformation("Fetched {Count} todos for page {PageNumber} with page size {PageSize}", result.Count, pageNumber, pageSize);
+            _logger.LogInformation("\n ---START--- \n \n Fetched {Count} todos for page {PageNumber} with page size {PageSize} \n \n ---END--- \n", result.Count, pageNumber, pageSize);
             return result;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error fetching todos");
+            _logger.LogError(ex, "\n ---START--- \n \n Error fetching todos \n \n ---END--- \n");
             throw;
         }
     }
@@ -52,14 +52,14 @@ public class TodoRepository : ITodoRepository
                                    WHERE Id = @Id";
             var result = await connection.QuerySingleOrDefaultAsync<Todo>(query, new { Id = id });
 
-            if (result != null) _logger.LogInformation("Fetched todo with ID {Id}", id);
-            else _logger.LogWarning("No todo found with ID {Id}", id);
+            if (result != null) _logger.LogInformation("\n ---START--- \n \n Fetched todo with ID {Id} \n \n ---END--- \n", id);
+            else _logger.LogWarning("\n ---START--- \n \n No todo found with ID {Id} \n \n ---END--- \n", id);
 
             return result;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error fetching todo with ID {Id}", id);
+            _logger.LogError(ex, "\n ---START--- \n \n Error fetching todo with ID {Id} \n \n ---END--- \n", id);
             throw;
         }
     }
@@ -74,12 +74,12 @@ public class TodoRepository : ITodoRepository
                                    SELECT last_insert_rowid();";
                                    // Note: Text/Title mapping, rename in the future.
             var newId = await connection.ExecuteScalarAsync<int>(query, todo);
-            _logger.LogInformation("Created new todo with ID {Id}", newId);
+            _logger.LogInformation("\n ---START--- \n \n Created new todo with ID {Id} \n \n ---END--- \n", newId);
             return true;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error creating new todo");
+            _logger.LogError(ex, "\n ---START--- \n \n Error creating new todo \n \n ---END--- \n");
             throw;
         }
     }
@@ -99,13 +99,13 @@ public class TodoRepository : ITodoRepository
                                    WHERE Id = @Id";
                                     // Note: Text/Title mapping, rename in the future.
             var rowsAffected = await connection.ExecuteAsync(query, todo);
-            if (rowsAffected > 0) _logger.LogInformation("Updated todo with ID {Id}", todo.Id);
-            else _logger.LogWarning("No todo found to update with ID {Id}", todo.Id);
+            if (rowsAffected > 0) _logger.LogInformation("\n ---START--- \n \n Updated todo with ID {Id} \n \n ---END--- \n", todo.Id);
+            else _logger.LogWarning("\n ---START--- \n \n No todo found to update with ID {Id} \n \n ---END--- \n", todo.Id);
             return rowsAffected > 0;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error updating todo with ID {Id}", todo.Id);
+            _logger.LogError(ex, "\n ---START--- \n \n Error updating todo with ID {Id} \n \n ---END--- \n", todo.Id);
             throw;
         }
     }
@@ -117,13 +117,13 @@ public class TodoRepository : ITodoRepository
             using var connection = _dbConnectionFactory.CreateConnection();
             const string query = @"DELETE FROM Todos WHERE Id = @Id";
             var rowsAffected = await connection.ExecuteAsync(query, new { Id = id });
-            if (rowsAffected > 0) _logger.LogInformation("Deleted todo with ID {Id}", id);
-            else _logger.LogWarning("No todo found to delete with ID {Id}", id);
+            if (rowsAffected > 0) _logger.LogInformation("\n ---START--- \n \n Deleted todo with ID {Id} \n \n ---END--- \n", id);
+            else _logger.LogWarning("\n ---START--- \n \n No todo found to delete with ID {Id} \n \n ---END--- \n", id);
             return rowsAffected > 0;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error deleting todo with ID {Id}", id);
+            _logger.LogError(ex, "\n ---START--- \n \n Error deleting todo with ID {Id} \n \n ---END--- \n", id);
             throw;
         }
     }

@@ -17,16 +17,16 @@ public class DreamEntryService : IDreamEntryService
 
     public Task<IEnumerable<DreamEntry>> GetAllDreamEntries(int pageNumber, int pageSize)
     {
-        if (pageNumber < 1) pageNumber = 1; _logger.LogWarning("Page number less than 1, defaulting to 1");
-        if (pageSize < 1) pageSize = 10; _logger.LogWarning("Page size less than 1, defaulting to 10");
+        if (pageNumber < 1) pageNumber = 1; _logger.LogWarning("\n ---START--- \n \n Page number less than 1, defaulting to 1 \n \n ---END--- \n");
+        if (pageSize < 1) pageSize = 10; _logger.LogWarning("\n ---START--- \n \n Page size less than 1, defaulting to 10 \n \n ---END--- \n");
         //note: remember to remove such validation at the repository layer.
         try {
-            _logger.LogInformation("Delegating GetAllDreamEntries to repository with \n pageNumber: {PageNumber}, pageSize: {PageSize}", pageNumber, pageSize);
+            _logger.LogInformation("\n ---START--- \n \n Delegating GetAllDreamEntries to repository with \n pageNumber: {PageNumber}, pageSize: {PageSize} \n \n ---END--- \n", pageNumber, pageSize);
             return _dreamEntryRepository.GetAllDreamEntries(pageNumber, pageSize);
         }     
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error in GetAllDreamEntries with \n pageNumber: {PageNumber}, pageSize: {PageSize}", pageNumber, pageSize);
+            _logger.LogError(ex, "\n ---START--- \n \n Error in GetAllDreamEntries with \n pageNumber: {PageNumber}, pageSize: {PageSize} \n \n ---END--- \n", pageNumber, pageSize);
             throw;
         }
     }
@@ -35,12 +35,12 @@ public class DreamEntryService : IDreamEntryService
     {
         try
         {
-            _logger.LogInformation("Delegating GetDreamEntryById to repository with id: {Id}", id);
+            _logger.LogInformation("\n ---START--- \n \n Delegating GetDreamEntryById to repository with id: {Id} \n \n ---END--- \n", id);
             return await _dreamEntryRepository.GetDreamEntryById(id);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error in GetDreamEntryById with id: {Id}", id);
+            _logger.LogError(ex, "\n ---START--- \n \n Error in GetDreamEntryById with id: {Id} \n \n ---END--- \n", id);
             throw;
         }
     }   
@@ -48,7 +48,7 @@ public class DreamEntryService : IDreamEntryService
     public async Task<bool> CreateDreamEntry(string title, string content, DateOnly? date)
     {
         try {
-            _logger.LogInformation("Creating DreamEntry entity with title: \n {Title}, \n content: {Content}, \n date: {Date}", title, content, date);  
+            _logger.LogInformation("\n ---START--- \n \n Creating DreamEntry entity with title: \n {Title}, \n content: {Content}, \n date: {Date} \n \n ---END--- \n", title, content, date);  
             var entry = new DreamEntry
             {
                 Title = title,
@@ -56,13 +56,13 @@ public class DreamEntryService : IDreamEntryService
                 Date = date ?? DateOnly.FromDateTime(DateTime.UtcNow)
             };
 
-            _logger.LogInformation("Entity is created -> Delegating CreateDreamEntry to repository with title: \n {Title}, \n content: {Content}, \n date: {Date}", title, content, date);
+            _logger.LogInformation("\n ---START--- \n \n Entity is created -> Delegating CreateDreamEntry to repository with title: \n {Title}, \n content: {Content}, \n date: {Date} \n \n ---END--- \n", title, content, date);
 
             return await _dreamEntryRepository.CreateDreamEntry(entry);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error in CreateDreamEntry with title: \n {Title}, \n content: {Content}, \n date: {Date}", title, content, date);
+            _logger.LogError(ex, "\n ---START--- \n \n Error in CreateDreamEntry with title: \n {Title}, \n content: {Content}, \n date: {Date} \n \n ---END--- \n", title, content, date);
             throw;
         }
     }
@@ -70,7 +70,7 @@ public class DreamEntryService : IDreamEntryService
     public async Task<bool> UpdateDreamEntry(string title, string content, DateOnly date, int id)
     {  
         try {
-            _logger.LogInformation("Creating DreamEntry entity for update with id: {Id}, title: \n {Title}, \n content: {Content}, \n date: {Date}", id, title, content, date);
+            _logger.LogInformation("\n ---START--- \n \n Creating DreamEntry entity for update with id: {Id}, title: \n {Title}, \n content: {Content}, \n date: {Date} \n \n ---END--- \n", id, title, content, date);
             var entry = new DreamEntry
             {
                 Id = id,
@@ -78,12 +78,12 @@ public class DreamEntryService : IDreamEntryService
                 Description = content,
                 Date = date
             };
-            _logger.LogInformation("Entity is created -> Delegating UpdateDreamEntry to repository with id: {Id}, title: \n {Title}, \n content: {Content}, \n date: {Date}", id, title, content, date);
+            _logger.LogInformation("\n ---START--- \n \n Entity is created -> Delegating UpdateDreamEntry to repository with id: {Id}, title: \n {Title}, \n content: {Content}, \n date: {Date} \n \n ---END--- \n", id, title, content, date);
             return await _dreamEntryRepository.UpdateDreamEntry(entry);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error in UpdateDreamEntry with id: {Id}, title: \n {Title}, \n content: {Content}, \n date: {Date}", id, title, content, date);
+            _logger.LogError(ex, "\n ---START--- \n \n Error in UpdateDreamEntry with id: {Id}, title: \n {Title}, \n content: {Content}, \n date: {Date} \n \n ---END--- \n", id, title, content, date);
             throw;
         }
     }
@@ -92,12 +92,12 @@ public class DreamEntryService : IDreamEntryService
     {   
         try 
         {
-            _logger.LogInformation("Delegating DeleteDreamEntry to repository with id: {Id}", id);
+            _logger.LogInformation("\n ---START--- \n \n Delegating DeleteDreamEntry to repository with id: {Id} \n \n ---END--- \n", id);
             return await _dreamEntryRepository.DeleteDreamEntry(id);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error in DeleteDreamEntry with id: {Id}", id);
+            _logger.LogError(ex, "\n ---START--- \n \n Error in DeleteDreamEntry with id: {Id} \n \n ---END--- \n", id);
             throw;
         }
 
@@ -106,12 +106,12 @@ public class DreamEntryService : IDreamEntryService
     {
         try
         {
-            _logger.LogInformation("Delegating GetDreamEntriesByDate to repository with date: {Date}", date);
+            _logger.LogInformation("\n ---START--- \n \n Delegating GetDreamEntriesByDate to repository with date: {Date} \n \n ---END--- \n", date);
             return await _dreamEntryRepository.GetDreamEntriesByDate(date);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error in GetDreamEntriesByDate with date: {Date}", date);
+            _logger.LogError(ex, "\n ---START--- \n \n Error in GetDreamEntriesByDate with date: {Date} \n \n ---END--- \n", date);
             throw;
         }
     }
