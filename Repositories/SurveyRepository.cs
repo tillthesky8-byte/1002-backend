@@ -21,6 +21,8 @@ public class SurveyRepository : ISurveyRepository
         try
         {
             using var connection = _dbConnectionFactory.CreateConnection();
+            _logger.LogInformation("\n ---START--- \n \n Connection object created for checking existing survey session today \n \n ---END--- \n");
+
             const string query = @"SELECT COUNT(1) FROM SurveySessions WHERE Date = @Today";
             var count = await connection.ExecuteScalarAsync<int>(query, new { Today = DateOnly.FromDateTime(DateTime.UtcNow) });
             _logger.LogInformation("\n ---START--- \n \n Checked for existing survey session today: {Exists} \n \n ---END--- \n", count > 0);
@@ -38,12 +40,17 @@ public class SurveyRepository : ISurveyRepository
         try
         {
             using var connection = _dbConnectionFactory.CreateConnection();
-            connection.Open();
+            _logger.LogInformation("\n ---START--- \n \n Connection object created for submitting survey session \n \n ---END--- \n");
+
+            connection.Open(); // note: upgrage to async version in the future
+            _logger.LogInformation("\n ---START--- \n \n Database connection opened for submitting survey session \n \n ---END--- \n");
+
             using var transaction = connection.BeginTransaction();
 
             // Insert SurveySession
             const string insertSessionQuery = @"INSERT INTO SurveySessions (Date) VALUES (@Date); SELECT last_insert_rowid();";
             var sessionId = await connection.ExecuteScalarAsync<int>(insertSessionQuery, new { Date = session.Date }, transaction);
+            _logger.LogInformation("\n ---START--- \n \n Created survey session with ID {SessionId} for date {Date} \n \n ---END--- \n", sessionId, session.Date);
 
             // Insert Answers
             const string insertAnswerQuery = @"INSERT INTO Answers (SurveySessionId, QuestionId, Response) VALUES (@SurveySessionId, @QuestionId, @Response)";
@@ -51,6 +58,7 @@ public class SurveyRepository : ISurveyRepository
             {
                 await connection.ExecuteAsync(insertAnswerQuery, new { SurveySessionId = sessionId, QuestionId = answer.QuestionId, Response = answer.Response }, transaction);
             }
+            _logger.LogInformation("\n ---START--- \n \n Inserted answers for survey session with ID {SessionId} \n \n ---END--- \n", sessionId);
 
             transaction.Commit();
             _logger.LogInformation("\n ---START--- \n \n Submitted survey session with ID {SessionId} and {AnswerCount} answers \n \n ---END--- \n", sessionId, answers.Count);

@@ -21,10 +21,13 @@ public class DreamEntryRepository : IDreamEntryRepository
         try
         {
             using var connection = _dbConnectionFactory.CreateConnection();
+            _logger.LogInformation("\n ---START--- \n \n Connection object created for fetching dream entries by date \n \n ---END--- \n");
+
             const string query = @"SELECT Id, Title, Description, Date
                                    FROM DreamEntries
                                    WHERE Date = @Date
                                    ORDER BY Date DESC";
+                                   
             var result = (await connection.QueryAsync<DreamEntry>(query, new { Date = date })).AsList();
             _logger.LogInformation("\n ---START--- \n \n Fetched {Count} dream entries for date {Date} \n \n ---END--- \n", result.Count, date);
             return result;
@@ -39,18 +42,17 @@ public class DreamEntryRepository : IDreamEntryRepository
     // CRUD operations for DreamEntry
     public async Task<IEnumerable<DreamEntry>> GetAllDreamEntries(int pageNumber, int pageSize)
     {
-        // basic input validation
-        if (pageNumber < 1) pageNumber = 1;
-        if (pageSize < 1) pageSize = 10;
-
         try
         {
             using var connection = _dbConnectionFactory.CreateConnection();
+            _logger.LogInformation("\n ---START--- \n \n Connection object created for fetching all dream entries \n \n ---END--- \n");
+
             var offset = (pageNumber - 1) * pageSize;
             const string query = @"SELECT Id, Title, Description, Date
                                    FROM DreamEntries
                                    ORDER BY Date DESC
                                    LIMIT @PageSize OFFSET @Offset";
+
             var result = (await connection.QueryAsync<DreamEntry>(query, new { PageSize = pageSize, Offset = offset })).AsList();
             _logger.LogInformation("\n ---START--- \n \n Fetched {Count} dream entries for page {PageNumber} with page size {PageSize} \n \n ---END--- \n", result.Count, pageNumber, pageSize);
             return result;
@@ -68,9 +70,12 @@ public class DreamEntryRepository : IDreamEntryRepository
         try
         {
             using var connection = _dbConnectionFactory.CreateConnection();
+            _logger.LogInformation("\n ---START--- \n \n Connection object created for fetching dream entry by ID \n \n ---END--- \n");
+
             const string query = @"SELECT Id, Title, Description, Date
                                    FROM DreamEntries
                                    WHERE Id = @Id";
+
             var result = await connection.QuerySingleOrDefaultAsync<DreamEntry>(query, new { Id = id });
             
             if (result != null) _logger.LogInformation("\n ---START--- \n \n Fetched dream entry with ID {Id} \n \n ---END--- \n", id);
@@ -90,6 +95,7 @@ public class DreamEntryRepository : IDreamEntryRepository
         try
         {
             using var connection = _dbConnectionFactory.CreateConnection();
+            _logger.LogInformation("\n ---START--- \n \n Connection object created for creating dream entry \n \n ---END--- \n");
             const string query = @"INSERT INTO DreamEntries (Title, Description, Date)
                                    VALUES (@Title, @Description, @Date);
                                    SELECT last_insert_rowid();";
@@ -109,6 +115,7 @@ public class DreamEntryRepository : IDreamEntryRepository
         try
         {
             using var connection = _dbConnectionFactory.CreateConnection();
+            _logger.LogInformation("\n ---START--- \n \n Connection object created for updating dream entry \n \n ---END--- \n");
             const string query = @"UPDATE DreamEntries
                                    SET Title = @Title, Description = @Description, Date = @Date
                                    WHERE Id = @Id";
@@ -129,7 +136,9 @@ public class DreamEntryRepository : IDreamEntryRepository
         try
         {
             using var connection = _dbConnectionFactory.CreateConnection();
+            _logger.LogInformation("\n ---START--- \n \n Connection object created for deleting dream entry \n \n ---END--- \n");
             const string query = @"DELETE FROM DreamEntries WHERE Id = @Id";
+
             var rowsAffected = await connection.ExecuteAsync(query, new { Id = id });
             if (rowsAffected > 0) _logger.LogInformation("\n ---START--- \n \n Deleted dream entry with ID {Id} \n \n ---END--- \n", id);
             else _logger.LogWarning("\n ---START--- \n \n No dream entry found to delete with ID {Id} \n \n ---END--- \n", id);

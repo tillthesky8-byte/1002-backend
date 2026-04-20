@@ -20,12 +20,11 @@ public class TodoRepository : ITodoRepository
     public async Task<IEnumerable<Todo>> GetAllTodos(int pageNumber, int pageSize)
     {
         // Basic input validation for pagination parameters.
-        if (pageNumber < 1) pageNumber = 1;
-        if (pageSize < 1) pageSize = 10;
-
         try
         {
             using var connection = _dbConnectionFactory.CreateConnection();
+            _logger.LogInformation("\n ---START--- \n \n Connection object created for fetching todos \n \n ---END--- \n");
+
             var offset = (pageNumber - 1) * pageSize;
             const string query = @"SELECT Id, Text, CreatedAt, DueAt, FinishedAt, StatusId, TimeFrameId
                                    FROM Todos
@@ -47,6 +46,8 @@ public class TodoRepository : ITodoRepository
         try
         {
             using var connection = _dbConnectionFactory.CreateConnection();
+            _logger.LogInformation("\n ---START--- \n \n Connection object created for fetching todo \n \n ---END--- \n");
+
             const string query = @"SELECT Id, Text, CreatedAt, DueAt, FinishedAt, StatusId, TimeFrameId
                                    FROM Todos
                                    WHERE Id = @Id";
@@ -69,10 +70,12 @@ public class TodoRepository : ITodoRepository
         try
         {
             using var connection = _dbConnectionFactory.CreateConnection();
+            _logger.LogInformation("\n ---START--- \n \n Connection object created for creating todo \n \n ---END--- \n");
+
             const string query = @"INSERT INTO Todos (Text, CreatedAt, DueAt, FinishedAt, StatusId, TimeFrameId)
                                    VALUES (@Text, @CreatedAt, @DueAt, @FinishedAt, @StatusId, @TimeFrameId);
                                    SELECT last_insert_rowid();";
-                                   // Note: Text/Title mapping, rename in the future.
+
             var newId = await connection.ExecuteScalarAsync<int>(query, todo);
             _logger.LogInformation("\n ---START--- \n \n Created new todo with ID {Id} \n \n ---END--- \n", newId);
             return true;
@@ -89,6 +92,8 @@ public class TodoRepository : ITodoRepository
         try
         {
             using var connection = _dbConnectionFactory.CreateConnection();
+            _logger.LogInformation("\n ---START--- \n \n Connection object created for updating todo \n \n ---END--- \n");
+
             const string query = @"UPDATE Todos
                                    SET Text = @Text,
                                        CreatedAt = @CreatedAt,
@@ -97,7 +102,7 @@ public class TodoRepository : ITodoRepository
                                        StatusId = @StatusId,
                                        TimeFrameId = @TimeFrameId
                                    WHERE Id = @Id";
-                                    // Note: Text/Title mapping, rename in the future.
+
             var rowsAffected = await connection.ExecuteAsync(query, todo);
             if (rowsAffected > 0) _logger.LogInformation("\n ---START--- \n \n Updated todo with ID {Id} \n \n ---END--- \n", todo.Id);
             else _logger.LogWarning("\n ---START--- \n \n No todo found to update with ID {Id} \n \n ---END--- \n", todo.Id);
@@ -115,8 +120,11 @@ public class TodoRepository : ITodoRepository
         try
         {
             using var connection = _dbConnectionFactory.CreateConnection();
+            _logger.LogInformation("\n ---START--- \n \n Connection object created for deleting todo \n \n ---END--- \n");
+
             const string query = @"DELETE FROM Todos WHERE Id = @Id";
             var rowsAffected = await connection.ExecuteAsync(query, new { Id = id });
+            
             if (rowsAffected > 0) _logger.LogInformation("\n ---START--- \n \n Deleted todo with ID {Id} \n \n ---END--- \n", id);
             else _logger.LogWarning("\n ---START--- \n \n No todo found to delete with ID {Id} \n \n ---END--- \n", id);
             return rowsAffected > 0;
