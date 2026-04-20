@@ -48,12 +48,14 @@ public class TodoService : ITodoService
 
     public async Task<bool> CreateTodo(string text, int? dueAt, int timeFrameId)
     {
+        if (timeFrameId < 1) timeFrameId = 1; _logger.LogWarning("TimeFrameId less than 1, defaulting to 1");
+        if (timeFrameId > 3) timeFrameId = 3; _logger.LogWarning("TimeFrameId greater than 3, defaulting to 3");
         try
         {
             _logger.LogInformation("Creating Todo entity with text: \n {Text}, \n dueAt: {DueAt}, \n statusId: {StatusId}, \n timeFrameId: {TimeFrameId}", text, dueAt, 1, timeFrameId);
             var todo = new Todo
             {
-                Title = text,
+                Text = text,
                 DueAt = dueAt,
                 StatusId = 1,
                 TimeFrameId = timeFrameId
@@ -71,13 +73,15 @@ public class TodoService : ITodoService
 
     public async Task<bool> UpdateTodo(string text, int? dueAt, int? finishedAt, int statusId, int timeFrameId, int id)
     {
+        if (timeFrameId < 1) timeFrameId = 1; _logger.LogWarning("TimeFrameId less than 1, defaulting to 1");
+        if (timeFrameId > 3) timeFrameId = 3; _logger.LogWarning("TimeFrameId greater than 3, defaulting to 3");
         try
         {
             _logger.LogInformation("Creating Todo entity with id: {Id}, text: \n {Text}, \n dueAt: {DueAt}, \n finishedAt: {FinishedAt}, \n statusId: {StatusId}, \n timeFrameId: {TimeFrameId}", id, text, dueAt, finishedAt, statusId, timeFrameId);
             var todo = new Todo
             {
                 Id = id,
-                Title = text,
+                Text = text,
                 DueAt = dueAt,
                 FinishedAt = finishedAt,
                 StatusId = statusId,

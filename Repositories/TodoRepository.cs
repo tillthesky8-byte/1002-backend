@@ -27,11 +27,10 @@ public class TodoRepository : ITodoRepository
         {
             using var connection = _dbConnectionFactory.CreateConnection();
             var offset = (pageNumber - 1) * pageSize;
-            const string query = @"SELECT Id, Text AS Title, CreatedAt, DueAt, FinishedAt, StatusId, TimeFrameId
+            const string query = @"SELECT Id, Text, CreatedAt, DueAt, FinishedAt, StatusId, TimeFrameId
                                    FROM Todos
                                    ORDER BY CreatedAt DESC
                                    LIMIT @PageSize OFFSET @Offset";
-                                   // Note: Text/Title mapping, rename in the future.
             var result = (await connection.QueryAsync<Todo>(query, new { PageSize = pageSize, Offset = offset })).AsList();
             _logger.LogInformation("Fetched {Count} todos for page {PageNumber} with page size {PageSize}", result.Count, pageNumber, pageSize);
             return result;
@@ -48,10 +47,9 @@ public class TodoRepository : ITodoRepository
         try
         {
             using var connection = _dbConnectionFactory.CreateConnection();
-            const string query = @"SELECT Id, Text AS Title, CreatedAt, DueAt, FinishedAt, StatusId, TimeFrameId
+            const string query = @"SELECT Id, Text, CreatedAt, DueAt, FinishedAt, StatusId, TimeFrameId
                                    FROM Todos
                                    WHERE Id = @Id";
-                                   // Note: Text/Title mapping, rename in the future.
             var result = await connection.QuerySingleOrDefaultAsync<Todo>(query, new { Id = id });
 
             if (result != null) _logger.LogInformation("Fetched todo with ID {Id}", id);
@@ -72,7 +70,7 @@ public class TodoRepository : ITodoRepository
         {
             using var connection = _dbConnectionFactory.CreateConnection();
             const string query = @"INSERT INTO Todos (Text, CreatedAt, DueAt, FinishedAt, StatusId, TimeFrameId)
-                                   VALUES (@Title, @CreatedAt, @DueAt, @FinishedAt, @StatusId, @TimeFrameId);
+                                   VALUES (@Text, @CreatedAt, @DueAt, @FinishedAt, @StatusId, @TimeFrameId);
                                    SELECT last_insert_rowid();";
                                    // Note: Text/Title mapping, rename in the future.
             var newId = await connection.ExecuteScalarAsync<int>(query, todo);
@@ -92,7 +90,7 @@ public class TodoRepository : ITodoRepository
         {
             using var connection = _dbConnectionFactory.CreateConnection();
             const string query = @"UPDATE Todos
-                                   SET Text = @Title,
+                                   SET Text = @Text,
                                        CreatedAt = @CreatedAt,
                                        DueAt = @DueAt,
                                        FinishedAt = @FinishedAt,
