@@ -1,4 +1,5 @@
 using _1002_backend.Models;
+using _1002_backend.Models.PatchModels;
 using _1002_backend.Repositories.Interfaces;
 using _1002_backend.Services.Interfaces;
 
@@ -126,4 +127,33 @@ public class TodoService : ITodoService
             throw;
         }   
     }
-}
+
+    public async Task<bool> PatchTodo(TodoPatch patch, int id)
+    {
+        try
+        {
+            var todoToPatch = await _todoRepository.GetTodoById(id);
+            if (todoToPatch == null)
+            {
+                _logger.LogWarning("\n ---START--- \n \n No todo found with ID {Id} for patching \n \n ---END--- \n", id);
+                return false;
+            }
+            var updatedTodo = new Todo
+            {
+                Id = id,
+                Text = patch.Text ?? todoToPatch.Text,
+                DueAt = patch.DueAt ?? todoToPatch.DueAt,
+                FinishedAt = patch.FinishedAt ?? todoToPatch.FinishedAt,
+                StatusId = patch.StatusId ?? todoToPatch.StatusId,
+                TimeFrameId = patch.TimeFrameId ?? todoToPatch.TimeFrameId
+            };
+
+            return await _todoRepository.UpdateTodo(updatedTodo);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "\n ---START--- \n \n Error in PatchTodo with id: {Id} and patch data: text: \n {Text}, \n dueAt: {DueAt}, \n finishedAt: {FinishedAt}, \n statusId: {StatusId}, \n timeFrameId: {TimeFrameId} \n \n ---END--- \n", id, patch.Text, patch.DueAt, patch.FinishedAt, patch.StatusId, patch.TimeFrameId);
+            throw;
+        }
+    }
+}   

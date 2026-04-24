@@ -1,6 +1,7 @@
 using _1002_backend.Dtos.Todos;
 using _1002_backend.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using _1002_backend.Models.PatchModels;
 namespace _1002_backend.Controllers;
 [ApiController]
 [Route("api/[controller]")]
@@ -89,4 +90,23 @@ public class TodoController : ControllerBase
         if (!success) return BadRequest();
         return Ok();
     }
-}
+    
+    // PATCH: api/todo/{id}
+    [HttpPatch("{id}")]
+    public async Task<IActionResult> PatchTodo(int id, [FromBody] PatchTodoRequest request)
+    {
+        _logger.LogInformation("\n ---START--- \n \n Received request to patch todo with id: {Id}, text: {Text}, dueAt: {DueAt}, finishedAt: {FinishedAt}, statusId: {StatusId}, timeFrameId: {TimeFrameId} \n \n ---END--- \n", id, request.Text, request.DueAt, request.FinishedAt, request.StatusId, request.TimeFrameId);
+        var patch = new TodoPatch
+        {
+            Text = request.Text,
+            DueAt = request.DueAt,
+            FinishedAt = request.FinishedAt,
+            StatusId = request.StatusId,
+            TimeFrameId = request.TimeFrameId
+        };
+        _logger.LogInformation("\n ---START--- \n \n Delegating {PatchTodo} to service ... \n \n ---END--- \n", nameof(_todoService.PatchTodo));
+        var success = await _todoService.PatchTodo(patch, id);
+        if (!success) return BadRequest();
+        return Ok(); 
+    }
+}  

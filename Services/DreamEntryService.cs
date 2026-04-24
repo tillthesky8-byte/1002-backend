@@ -1,4 +1,5 @@
 using _1002_backend.Models;
+using _1002_backend.Models.PatchModels;
 using _1002_backend.Repositories.Interfaces;
 using _1002_backend.Services.Interfaces;
 
@@ -112,6 +113,35 @@ public class DreamEntryService : IDreamEntryService
         catch (Exception ex)
         {
             _logger.LogError(ex, "\n ---START--- \n \n Error in GetDreamEntriesByDate with date: {Date} \n \n ---END--- \n", date);
+            throw;
+        }
+    }
+    public async Task<bool> PatchDreamEntry(DreamEntryPatch patch, int id)
+    {
+        try
+        {
+            var entryToPatch = await _dreamEntryRepository.GetDreamEntryById(id);
+            if (entryToPatch == null)
+            {
+                _logger.LogWarning("\n ---START--- \n \n No dream entry found to patch with ID {Id} \n \n ---END--- \n", id);
+                return false;
+            }
+
+            var updatedEntry = new DreamEntry
+            {
+                Id = id,
+                Title = patch.Title ?? entryToPatch.Title,
+                Description = patch.Content ?? entryToPatch.Description,
+                Date = patch.Date ?? entryToPatch.Date
+            };
+
+            _logger.LogInformation("\n ---START--- \n \n Delegating PatchDreamEntry to repository with id: {Id} and patch data: title: \n {Title}, \n content: {Content}, \n date: {Date} \n \n ---END--- \n", id, patch.Title, patch.Content, patch.Date);
+
+            return await _dreamEntryRepository.UpdateDreamEntry(updatedEntry);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "\n ---START--- \n \n Error in PatchDreamEntry with id: {Id} and patch data: title: \n {Title}, \n content: {Content}, \n date: {Date} \n \n ---END--- \n", id, patch.Title, patch.Content, patch.Date);
             throw;
         }
     }

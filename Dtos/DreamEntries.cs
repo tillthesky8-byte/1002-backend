@@ -1,3 +1,4 @@
+// Dtos/DreamEntries.cs
 namespace _1002_backend.Dtos.DreamEntries;
 
 public class CreateDreamEntryRequest
@@ -12,6 +13,13 @@ public class UpdateDreamEntryRequest
     public string Title { get; set; } = string.Empty;
     public string Content { get; set; } = string.Empty;
     public DateOnly Date { get; set; }
+}
+
+public class PatchDreamEntryRequest
+{
+    public string? Title { get; set; }
+    public string? Content { get; set; }
+    public DateOnly? Date { get; set; }
 }
 
 public class DreamEntryResponse

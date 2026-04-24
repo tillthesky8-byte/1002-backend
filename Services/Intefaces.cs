@@ -1,4 +1,5 @@
 using _1002_backend.Models;
+using _1002_backend.Models.PatchModels;
 namespace _1002_backend.Services.Interfaces;
 
 public interface IDreamEntryService
@@ -9,6 +10,7 @@ public interface IDreamEntryService
     Task<bool> UpdateDreamEntry(string title, string content, DateOnly date, int id);
     Task<bool> DeleteDreamEntry(int id);
     Task<IEnumerable<DreamEntry>> GetDreamEntriesByDate(DateOnly date);
+    Task<bool> PatchDreamEntry(DreamEntryPatch patch, int id);
 }
 
 public interface ISurveyService
@@ -24,6 +26,7 @@ public interface ITodoService
     Task<bool> CreateTodo(string text, int? dueAt, int timeFrameId);
     Task<bool> UpdateTodo(string text, int? dueAt, int? finishedAt, int statusId, int timeFrameId, int id);
     Task<bool> DeleteTodo(int id);
+    Task<bool> PatchTodo(TodoPatch patch, int id);
 
     Task<bool> MarkTodoAsFinished(int id, bool isFailed);
 }

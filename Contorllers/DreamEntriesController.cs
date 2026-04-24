@@ -1,5 +1,6 @@
 using _1002_backend.Dtos.DreamEntries;
 using _1002_backend.Services.Interfaces;
+using _1002_backend.Models.PatchModels;
 
 using Microsoft.AspNetCore.Mvc;
 namespace _1002_backend.Controllers;
@@ -68,6 +69,24 @@ public class DreamEntriesController : ControllerBase
         _logger.LogInformation("\n ---START--- \n \n Received request to delete dream entry with id: {Id} \n \n ---END--- \n", id);
         _logger.LogInformation("\n ---START--- \n \n Delegating {DeleteDreamEntry} to service ... \n \n ---END--- \n", nameof(_dreamEntryService.DeleteDreamEntry));
         var success = await _dreamEntryService.DeleteDreamEntry(id);
+        if (!success) return BadRequest();
+        return Ok();
+    }
+    // PATCH: api/dreamentries/{id}
+    [HttpPatch("{id}")]
+    public async Task<IActionResult> PatchDreamEntry(int id, [FromBody] PatchDreamEntryRequest request)
+    {
+        _logger.LogInformation("\n ---START--- \n \n Received request to patch dream entry with id: {Id}, title: {Title}, content: {Content}, date: {Date} \n \n ---END--- \n", id, request.Title, request.Content, request.Date);
+        
+        var patch = new DreamEntryPatch
+        {
+            Title = request.Title,
+            Content = request.Content,
+            Date = request.Date
+        };
+
+        _logger.LogInformation("\n ---START--- \n \n Delegating {PatchDreamEntry} to service ... \n \n ---END--- \n", nameof(_dreamEntryService.PatchDreamEntry));
+        var success = await _dreamEntryService.PatchDreamEntry(patch, id);
         if (!success) return BadRequest();
         return Ok();
     }

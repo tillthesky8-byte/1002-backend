@@ -1,3 +1,4 @@
+// Dtos/Todos.cs
 namespace _1002_backend.Dtos.Todos;
 
 public class CreateTodoRequest
@@ -14,6 +15,15 @@ public class UpdateTodoRequest
     public int? FinishedAt { get; set; } = null;
     public int StatusId { get; set; }
     public int TimeFrameId { get; set; }
+}
+
+public class PatchTodoRequest
+{
+    public string? Text { get; set; }
+    public int? DueAt { get; set; }
+    public int? FinishedAt { get; set; }
+    public int? StatusId { get; set; }
+    public int? TimeFrameId { get; set; }
 }
 
 public class TodoResponse
