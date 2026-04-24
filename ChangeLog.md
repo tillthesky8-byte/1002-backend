@@ -1,11 +1,11 @@
 # CHANGELOG
 ## [Unreleased] `v1.0.3` 1002-backend
-### Changes for 2026-04-23
+### Changes for 2026-04-25
 - Create specialized agents for Repository level. Define general protocol, specialized protocol extensions for different types of operations, and a bootstrap template for creating new repository files.
     - *Repository Layer.*
 
-## [Unreleased] `v1.0.2` 1002-backend 
-### Changes for 2026-04-20
+## [Released] `v1.0.2` 1002-backend 
+### Changes for 2026-04-24
 <!-- commit message: Add flexible patch update methods for domains -->
 - Add flexible patch update methods for domains.
     - *Repository Layer, Service Layer, Controller Layer.*

@@ -1,4 +1,4 @@
-# 1002-backend v1.0.1
+# 1002-backend v1.0.2
 This is the backend project for one-user 1002-frontend application. It provides RESTful API for the frontend to interact with the database. The project is built with ASP.NET Core and uses SQLite as the database. Dapper is used for data access.
 
 The application consists of three main domains: DreamEntries, Survey, and Todos. Each domain maps to its own repository, service, and controller.
