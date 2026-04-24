@@ -109,4 +109,26 @@ public class TodoController : ControllerBase
         if (!success) return BadRequest();
         return Ok(); 
     }
+
+    // POST: api/todo/{id}/mark-as-completed
+    [HttpPost("{id}/mark-as-completed")]
+    public async Task<IActionResult> MarkAsCompleted(int id)
+    {
+        _logger.LogInformation("\n ---START--- \n \n Received request to mark todo as completed with id: {Id} \n \n ---END--- \n", id);
+        _logger.LogInformation("\n ---START--- \n \n Delegating {MarkTodoAsFinished} to service ... \n \n ---END--- \n", nameof(_todoService.MarkTodoAsFinished));
+        var success = await _todoService.MarkTodoAsFinished(id, false);
+        if (!success) return BadRequest();
+        return Ok();
+    }
+
+    // POST: api/todo/{id}/mark-as-failed
+    [HttpPost("{id}/mark-as-failed")]
+    public async Task<IActionResult> MarkAsFailed(int id)
+    {
+        _logger.LogInformation("\n ---START--- \n \n Received request to mark todo as failed with id: {Id} \n \n ---END--- \n", id);
+        _logger.LogInformation("\n ---START--- \n \n Delegating {MarkTodoAsFinished} to service ... \n \n ---END--- \n", nameof(_todoService.MarkTodoAsFinished));
+        var success = await _todoService.MarkTodoAsFinished(id, true);
+        if (!success) return BadRequest();
+        return Ok();
+    }
 }  

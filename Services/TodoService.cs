@@ -119,7 +119,12 @@ public class TodoService : ITodoService
         try
         {            
             _logger.LogInformation("\n ---START--- \n \n Delegating MarkTodoAsFinished to repository with id: {Id}, isFailed: {IsFailed} \n \n ---END--- \n", id, isFailed);
-            return true; //await _todoRepository.MarkTodoAsFinished(id, isFailed);
+            var specialPatch = new TodoPatch
+            {
+                FinishedAt = (int)DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+                StatusId = isFailed ? 3 : 2
+            };
+            return await PatchTodo(specialPatch, id);
         }
         catch (Exception ex)
         {
@@ -156,4 +161,5 @@ public class TodoService : ITodoService
             throw;
         }
     }
+
 }   

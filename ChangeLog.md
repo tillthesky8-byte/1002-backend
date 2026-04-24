@@ -6,9 +6,11 @@
 
 ## [Unreleased] `v1.0.2` 1002-backend 
 ### Changes for 2026-04-20
+<!-- commit message: Add flexible patch update methods for domains -->
 - Add flexible patch update methods for domains.
     - *Repository Layer, Service Layer, Controller Layer.*
 
+<!-- commit message: Complete MarkTodoAsFinished method in TodoService and corresponding endpoint in TodoController. Using patch update method -->  
 - Complete MarkTodoAsFinished method in TodoService and corresponding endpoint in TodoController. Using patch update method
     - *Service Layer, Controller Layer.*
 
