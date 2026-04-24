@@ -1,4 +1,5 @@
 using _1002_backend.Models;
+using _1002_backend.Models.SpecialModels;
 using _1002_backend.Repositories.Interfaces;
 using _1002_backend.Services.Interfaces;
 namespace _1002_backend.Services;
@@ -28,7 +29,7 @@ public class SurveyService : ISurveyService
         }
     }
 
-    public async Task<bool> SubmitSurvey(DateOnly date, List<Answer> answers)
+    public async Task<bool> SubmitSurvey(DateOnly date, List<BuildAnswer> answers)
     {
         try
         {
@@ -37,8 +38,16 @@ public class SurveyService : ISurveyService
             {
                 Date = date
             };
+
+            var answerEntities = answers.Select(a => new Answer
+            {
+                QuestionId = a.QuestionId,
+                Response = a.Response,
+                Remark = a.Remark
+            }).ToList();
+            
             _logger.LogInformation("\n ---START--- \n \n Entity is created -> Delegating SurveySubmit to repository with \n session date: {Date} \n answer count: {AnswerCount} \n \n ---END--- \n", session.Date, answers.Count);
-            return await _surveyRepository.SurveySubmit(session, answers);
+            return await _surveyRepository.SurveySubmit(session, answerEntities);
         }
         catch (Exception ex)
         {

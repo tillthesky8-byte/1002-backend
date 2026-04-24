@@ -1,5 +1,6 @@
 using _1002_backend.Models;
 using _1002_backend.Models.PatchModels;
+using _1002_backend.Models.SpecialModels;
 namespace _1002_backend.Services.Interfaces;
 
 public interface IDreamEntryService
@@ -16,7 +17,7 @@ public interface IDreamEntryService
 public interface ISurveyService
 {
     Task<bool> ExistsSurvey();
-    Task<bool> SubmitSurvey(DateOnly date, List<Answer> answers);
+    Task<bool> SubmitSurvey(DateOnly date, List<BuildAnswer> answers);
 }
 
 public interface ITodoService

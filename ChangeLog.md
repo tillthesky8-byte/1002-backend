@@ -14,6 +14,7 @@
 - Complete MarkTodoAsFinished method in TodoService and corresponding endpoint in TodoController. Using patch update method
     - *Service Layer, Controller Layer.*
 
+<!-- commit message: Create specialized Answer model for survey submission request without Id and SurveySessionId properties. -->
 - Create special Answer model for survey submission request without Id and SurveySessionId properties.
     - *Dtos.*
 
